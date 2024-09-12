@@ -20,48 +20,52 @@ chrome_options.add_experimental_option("prefs", {
     "profile.default_content_settings.popups": 0
 })
 
+#parametros
 pyautogui.PAUSE = 0.5
-
+driver = webdriver.Chrome()
+tabela = pd.read_csv(r"C:\Users\PC\Desktop\Captura de relatório por cliente sistema veri\CONSULTAR NO VERI.csv")
 
 #inicializar driver
-driver = webdriver.Chrome()
-driver.get("https://CNPJ.portal-veri.com.br")
-driver.set_window_size(1366, 768)
-
-
-#LOGIN NO DRIVE
-WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_sign_in_form"]/div[2]/input'))).send_keys("LOGIN") # Ajuste conforme necessário
-time.sleep(0.5)
-WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_sign_in_form"]/div[3]/input'))).send_keys("SENHA") # Ajuste conforme necessário
-time.sleep(0.5)
-WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_sign_in_form"]/div[5]/button'))).click()
-
+def initialize():
+    driver.get("https://CNPJ.portal-veri.com.br")
+    driver.set_window_size(1366, 768)
+    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_sign_in_form"]/div[2]/input'))).send_keys("LOGIN") # Ajuste conforme necessário
+    time.sleep(0.5)
+    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_sign_in_form"]/div[3]/input'))).send_keys("SENHA") # Ajuste conforme necessário
+    time.sleep(0.5)
+    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_sign_in_form"]/div[5]/button'))).click()
+    selectdash()
 #clica no elemento dash federal
-WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_app_content_container"]/div/div/div[2]/div[1]/div[3]/a/div/span'))).click()
-time.sleep(0.5)
-WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="select2-id_empresa_1-container"]/span'))).click()
-time.sleep(1)
-
-tabela = pd.read_csv(r"C:\Users\PC\Desktop\Captura de relatório por cliente sistema veri\CONSULTAR NO VERI.csv")
-for linha in tabela.index:
-    empresa = tabela.loc[linha, 'cnpj']
-    pyautogui.write(empresa)
-    pyautogui.press('enter')
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_app_content_container"]/div/div/div[2]/button'))).click()
-    time.sleep(0.5)
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_modal_export_users"]/div/div/div[2]/div[1]/span/span[1]/span'))).click()
-    time.sleep(1)
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_modal_export_users"]/div/div/div[2]/div[1]/span/span[1]/span'))).click()
-    pyautogui.press('down')
-    time.sleep(0.5)
-    pyautogui.press('enter')
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_modal_export_users"]/div/div/div[2]/div[2]/button/span[1]'))).click()
+def selectdash():
+    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_app_content_container"]/div/div/div[2]/div[1]/div[3]/a/div/span'))).click()
     time.sleep(0.5)
     WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="select2-id_empresa_1-container"]/span'))).click()
-    time.sleep(0.5)
+    time.sleep(1)
+    capturarelatorio()
+
+
+def capturarelatorio():
+    for linha in tabela.index:
+        empresa = tabela.loc[linha, 'cnpj']
+        pyautogui.write(empresa)
+        pyautogui.press('enter')
+        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_app_content_container"]/div/div/div[2]/button'))).click()
+        time.sleep(0.5)
+        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_modal_export_users"]/div/div/div[2]/div[1]/span/span[1]/span'))).click()
+        time.sleep(1)
+        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_modal_export_users"]/div/div/div[2]/div[1]/span/span[1]/span'))).click()
+        time.sleep(3)
+        pyautogui.press('down')
+        time.sleep(3)
+        pyautogui.press('enter')
+        time.sleep(1)
+        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_modal_export_users"]/div/div/div[2]/div[2]/button/span[1]'))).click()
+        time.sleep(0.5)
+        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="select2-id_empresa_1-container"]/span'))).click()
+        time.sleep(0.5)
     
 
-
+initialize()
    
 
 

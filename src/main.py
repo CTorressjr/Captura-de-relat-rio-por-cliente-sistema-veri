@@ -25,14 +25,14 @@ pyautogui.PAUSE = 0.5
 
 #inicializar driver
 driver = webdriver.Chrome()
-driver.get("https://08978175000180.portal-veri.com.br")
+driver.get("https://CNPJ.portal-veri.com.br")
 driver.set_window_size(1366, 768)
 
 
 #LOGIN NO DRIVE
-WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_sign_in_form"]/div[2]/input'))).send_keys("joas@controllersbr.com") # Ajuste conforme necessário
+WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_sign_in_form"]/div[2]/input'))).send_keys("LOGIN") # Ajuste conforme necessário
 time.sleep(0.5)
-WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_sign_in_form"]/div[3]/input'))).send_keys("Jd@005570") # Ajuste conforme necessário
+WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_sign_in_form"]/div[3]/input'))).send_keys("SENHA") # Ajuste conforme necessário
 time.sleep(0.5)
 WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_sign_in_form"]/div[5]/button'))).click()
 
@@ -51,16 +51,17 @@ for linha in tabela.index:
     time.sleep(0.5)
     WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_modal_export_users"]/div/div/div[2]/div[1]/span/span[1]/span'))).click()
     time.sleep(1)
-    pyautogui.press('tab')
-    pyautogui.press('enter')
+    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_modal_export_users"]/div/div/div[2]/div[1]/span/span[1]/span'))).click()
     pyautogui.press('down')
-    pyautogui.press('tab')
+    time.sleep(0.5)
     pyautogui.press('enter')
-    pyautogui.press('esc')
+    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_modal_export_users"]/div/div/div[2]/div[2]/button/span[1]'))).click()
+    time.sleep(0.5)
     WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="select2-id_empresa_1-container"]/span'))).click()
     time.sleep(0.5)
     
 
 
    
-    
+
+

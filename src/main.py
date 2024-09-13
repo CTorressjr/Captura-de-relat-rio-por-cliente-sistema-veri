@@ -45,7 +45,6 @@ def selectdash():
     WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="select2-id_empresa_1-container"]/span'))).click()
     time.sleep(1)
     getreport()
-    sendemail()
 
 
 def getreport():
@@ -86,19 +85,18 @@ def wait_for_download(timeout=60):
 def findallpdf():
     files = [f for f in os.listdir(download_dir) if f.endswith('.pdf')]
     return files
-    sendemail()
+
 
 
 def sendemail():
-    senderemail = 'ti2.controllersbr@gmail.com'
+    senderemail = "ti2.controllersbr@gmail.com"
     yag = yagmail.SMTP(senderemail, 'zlqo xxrb jcos iwwm')    
-    recipients = {
-        "carlos.junior@controllersbr.com"
+    recipients = ["redstarenzo@gmail.com"]
         #"ingrid@controllersbr.com"
         #"joas@controllersbr.com"
         #"juliocesar@controllersbr.com"
         #"lucas@controllersbr.com"
-    }
+    
     pdf_files = wait_for_download()
     if pdf_files:
         yag.send(
@@ -121,6 +119,7 @@ def sendemail():
 
 initialize()
 wait_for_download()
-   
+sendemail()
+
 
 

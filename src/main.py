@@ -1,7 +1,8 @@
 import os
 import time
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -23,7 +24,7 @@ chrome_options.add_experimental_option("prefs", {
 #parametros
 pyautogui.PAUSE = 0.5
 driver = webdriver.Chrome()
-tabela = pd.read_csv(r"C:\Users\PC\Desktop\Captura de relatório por cliente sistema veri\CONSULTAR NO VERI.csv")
+tabela = pd.read_csv(r"C:\Users\torre\Desktop\Captura-de-relat-rio-por-cliente-sistema-veri\cnpj.csv")
 
 #inicializar driver
 def initialize():
@@ -47,7 +48,7 @@ def selectdash():
 def capturarelatorio():
     for linha in tabela.index:
         empresa = tabela.loc[linha, 'cnpj']
-        pyautogui.write(empresa)
+        pyautogui.write(str(empresa))
         pyautogui.press('enter')
         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_app_content_container"]/div/div/div[2]/button'))).click()
         time.sleep(0.5)
@@ -55,13 +56,14 @@ def capturarelatorio():
         time.sleep(1)
         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_modal_export_users"]/div/div/div[2]/div[1]/span/span[1]/span'))).click()
         time.sleep(3)
-        pyautogui.press('down')
-        time.sleep(3)
-        pyautogui.press('enter')
+        actions = ActionChains(driver)
+        actions.key_down(Keys.ARROW_DOWN).perform()    
         time.sleep(1)
         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_modal_export_users"]/div/div/div[2]/div[2]/button/span[1]'))).click()
         time.sleep(0.5)
-        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="select2-id_empresa_1-container"]/span'))).click()
+        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="kt_modal_export_users"]/div/div/div[1]/div/i'))).click()
+        time.sleep(0.5)
+        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_app_header_wrapper"]/span/span[1]/span'))).click()
         time.sleep(0.5)
     
 

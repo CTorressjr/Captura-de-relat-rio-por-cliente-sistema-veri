@@ -9,6 +9,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import pyautogui
 import pandas as pd
+import yagmail 
+
 
 #config do driver
 download_dir = os.path.expanduser("~/Downloads") # diretorio de downloads do pc
@@ -24,15 +26,15 @@ chrome_options.add_experimental_option("prefs", {
 #parametros
 pyautogui.PAUSE = 0.5
 driver = webdriver.Chrome()
-tabela = pd.read_csv(r"C:\Users\torre\Desktop\Captura-de-relat-rio-por-cliente-sistema-veri\cnpj.csv")
+tabela = pd.read_csv(r'C:\Users\PC\Desktop\Captura de relatório por cliente sistema veri\Captura-de-relat-rio-por-cliente-sistema-veri\cnpj.csv')
 
 #inicializar driver
 def initialize():
-    driver.get("https://CNPJ.portal-veri.com.br")
+    driver.get("https://08978175000180.portal-veri.com.br")
     driver.set_window_size(1366, 768)
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_sign_in_form"]/div[2]/input'))).send_keys("LOGIN") # Ajuste conforme necessário
+    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_sign_in_form"]/div[2]/input'))).send_keys("joas@controllersbr.com") # Ajuste conforme necessário
     time.sleep(0.5)
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_sign_in_form"]/div[3]/input'))).send_keys("SENHA") # Ajuste conforme necessário
+    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_sign_in_form"]/div[3]/input'))).send_keys("Jd@005570") # Ajuste conforme necessário
     time.sleep(0.5)
     WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_sign_in_form"]/div[5]/button'))).click()
     selectdash()
@@ -42,10 +44,11 @@ def selectdash():
     time.sleep(0.5)
     WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="select2-id_empresa_1-container"]/span'))).click()
     time.sleep(1)
-    capturarelatorio()
+    getreport()
+    sendemail()
 
 
-def capturarelatorio():
+def getreport():
     for linha in tabela.index:
         empresa = tabela.loc[linha, 'cnpj']
         pyautogui.write(str(empresa))
@@ -65,9 +68,59 @@ def capturarelatorio():
         time.sleep(0.5)
         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_app_header_wrapper"]/span/span[1]/span'))).click()
         time.sleep(0.5)
-    
+
+
+
+def wait_for_download(timeout=60):
+    start_time = time.time()
+    while time.time() - start_time < timeout:
+        pdf_files = findallpdf()
+        if pdf_files:
+            # Verifica se os arquivos estão completos (não são .crdownload)
+            if all(not f.endswith('.crdownload') for f in pdf_files):
+                return [os.path.join(download_dir, f) for f in pdf_files]
+        time.sleep(1)
+    return []
+    findallpdf()
+
+def findallpdf():
+    files = [f for f in os.listdir(download_dir) if f.endswith('.pdf')]
+    return files
+    sendemail()
+
+
+def sendemail():
+    senderemail = 'ti2.controllersbr@gmail.com'
+    yag = yagmail.SMTP(senderemail, 'zlqo xxrb jcos iwwm')    
+    recipients = {
+        "carlos.junior@controllersbr.com"
+        #"ingrid@controllersbr.com"
+        #"joas@controllersbr.com"
+        #"juliocesar@controllersbr.com"
+        #"lucas@controllersbr.com"
+    }
+    pdf_files = wait_for_download()
+    if pdf_files:
+        yag.send(
+            to=recipients,
+            subject="Relatório Automático (Regularização Fiscal)", # Ajuste conforme necessário
+            contents="Por favor, veja os relatórios em anexo.",
+            attachments=pdf_files,
+        )
+        print(f"E-mail enviado com sucesso com os anexos {pdf_files}")
+        
+        # Deletar todos os arquivos da pasta após o envio
+        for file_path in pdf_files:
+            os.remove(file_path)
+        print("Todos os arquivos foram deletados.")
+    else:
+        print("Nenhum arquivo PDF encontrado para enviar.")
+
+
+
 
 initialize()
+wait_for_download()
    
 
 

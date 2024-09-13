@@ -32,9 +32,9 @@ tabela = pd.read_csv(r'CAMINHO DO SEU ARQUIVO')
 def initialize():
     driver.get("https://CNPJ.portal-veri.com.br")
     driver.set_window_size(1366, 768)
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_sign_in_form"]/div[2]/input'))).send_keys("LOGIN")
+    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_sign_in_form"]/div[2]/input'))).send_keys("joas@controllersbr.com") # Ajuste conforme necessário
     time.sleep(0.5)
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_sign_in_form"]/div[3]/input'))).send_keys("SENHA")
+    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_sign_in_form"]/div[3]/input'))).send_keys("Jd@005570") # Ajuste conforme necessário
     time.sleep(0.5)
     WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="kt_sign_in_form"]/div[5]/button'))).click()
     selectdash()
@@ -95,8 +95,12 @@ def merge_pdfs(pdf_files, output):
 # Envia o e-mail
 def sendemail():
     senderemail = "ti2.controllersbr@gmail.com"
-    yag = yagmail.SMTP(senderemail, 'xxxx xxxx xxxx xxxx')
-    recipients = ["carlos.junior@controllersbr.com", "ingrid@controllersbr.com", "joas@controllersbr.com", "juliocesar@controllersbr.com", "lucas@controllersbr.com"]
+    yag = yagmail.SMTP(senderemail, 'zlqo xxrb jcos iwwm')    
+    recipients = ["redstarenzo@gmail.com"]
+        #"ingrid@controllersbr.com"
+        #"joas@controllersbr.com"
+        #"juliocesar@controllersbr.com"
+        #"lucas@controllersbr.com"
     
     pdf_files = wait_for_download()
     if pdf_files:
@@ -122,8 +126,6 @@ def sendemail():
 initialize()
 wait_for_download()
 sendemail()
-
-
 
 
 
